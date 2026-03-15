@@ -960,7 +960,7 @@ A["Low-Light Image"] --> B["Retinex / DecomNet Decomposition"]
 B --> C["Reflectance"]
 B --> D["Illumination"]
 
-D --> E["Tapetum Reflection Module"]
+D --> E["Tapetum Attention Module"]
 E --> F["Enhanced Illumination"]
 
 C --> G["Reconstruction"]
