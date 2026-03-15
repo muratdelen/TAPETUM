@@ -771,9 +771,11 @@ I_{enh}(x)=R(x)\odot L(x)\odot(1+\lambda T_{rgb}(x))
 ### Comparison Visualization Structure
 
 ```markdown
-| Input | RetinexNet | RetinexTapetum | TapetumRGB | DecomNetTapetumRGB |
-|------|------|------|------|------|
-| ![](example/input.png) | ![](example/rnet.png) | ![](example/tap.png) | ![](example/rgb.png) | ![](example/full.png) |
+### Comparison Visualization Structure
+
+| Low-Light Input | Ground Truth | RetinexNet | RetinexTapetum | TapetumRGB | DecomNetTapetum | DecomNetTapetumRGB |
+|------|------|------|------|------|------|------|
+| ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/datasets/LoLv2/LOL-v2/Real_captured/Test/Low/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/datasets/LoLv2/LOL-v2/Real_captured/Test/Normal/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/RetinexNet/results/Test/00750_S.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/retinex-tapetum/results/Test/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/RetinexTapetumRGB/results/Test/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/DecomNetRetinexTapetum/results/Test/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/DecomNetRetinexTapetumRGB/results/Test/00750.png) |
 ```
 
 
@@ -1301,3 +1303,92 @@ The table below is updated directly from the exported metric summary file.
 - Among the TAPETUM family, the two strongest overall variants are the **DecomNet-based models**.
 - The metric gap between **DecomNetRetinexTapetumRGB** and **DecomNetRetinexTapetum** can be interpreted as a trade-off between stronger brightness recovery and stronger structural preservation.
 - **RetinexNet** uses a different output/error scale for MAE, MSE, and RMSE compared with the other models, so those values should be interpreted with care.
+
+
+---
+
+# Biological Background of Retinex
+
+## Human Vision and Retinex Theory
+
+The Retinex theory was introduced by **Edwin H. Land and John J. McCann (1971)** to explain how the human visual system perceives colors under varying illumination conditions. Unlike simple pixel-based brightness perception, the human eye performs **spatial comparisons across the entire scene** to determine perceived color and brightness.
+
+Human vision processes light using three independent cone channels:
+
+L, M, S
+
+representing long, medium, and short wavelength responses.
+
+Retinex models emulate this mechanism by separating an image into reflectance and illumination components:
+
+I(x) = R(x) L(x)
+
+where
+
+I(x) : observed image  
+R(x) : reflectance (intrinsic object color)  
+L(x) : illumination (lighting conditions)
+
+This decomposition enables illumination normalization and visibility enhancement.
+
+## Spatial Comparison Mechanism
+
+Early neurophysiological studies demonstrated that retinal neurons perform **center–surround spatial comparisons** when processing visual stimuli.
+
+Important contributions include:
+
+- **Kuffler (1953)** – discovery of center-surround receptive fields  
+- **Barlow** – spatial comparison mechanisms in perception  
+- **Hubel & Wiesel** – spatial feature detection in the visual cortex  
+
+These studies showed that perception depends on **relative spatial differences**, not absolute brightness.
+
+Retinex algorithms mimic this process through local contrast computations.
+
+## Color Mondrian Experiment
+
+Land’s famous **Color Mondrian experiment** demonstrated that perceived color depends more on spatial relationships than on absolute spectral measurements.
+
+Two surfaces reflecting identical physical light intensities can appear as **different colors** depending on surrounding patches.
+
+This confirms that color perception is determined by **relative spatial comparisons** rather than absolute light values.
+
+## Relation to Low-Light Image Enhancement
+
+Low-light image enhancement can be interpreted as recovering the illumination component while preserving intrinsic reflectance.
+
+Retinex-based models estimate:
+
+- scene illumination
+- intrinsic reflectance
+
+and reconstruct an enhanced image with improved visibility.
+
+## Connection to the TAPETUM Framework
+
+The **TAPETUM framework** extends classical Retinex by incorporating a biologically inspired illumination amplification mechanism inspired by **tapetum lucidum**, a reflective layer found in the eyes of nocturnal animals.
+
+Tapetum lucidum reflects incoming light back through the retina, increasing photon capture under low illumination.
+
+The TAPETUM illumination model modifies illumination as:
+
+Lt(x) = L(x)(1 + λT(x))
+
+where
+
+T(x) : Tapetum attention map  
+λ : amplification strength
+
+## RGB Spectral Adaptation (Reindeer Vision Inspiration)
+
+Some animals such as **reindeer** exhibit seasonal changes in the reflective properties of their tapetum lucidum.
+
+During winter months the tapetum reflects more **blue wavelengths**, improving visual sensitivity in low-light environments.
+
+Inspired by this phenomenon, **Retinex‑Tapetum RGB** performs channel-wise illumination amplification:
+
+Lc(x) = Lc(x)(1 + λTc(x))
+
+for c ∈ {R,G,B}.
+
+This spectral amplification can increase brightness (higher PSNR) but may slightly degrade structural similarity (lower SSIM), which explains the metric differences observed in experiments.
