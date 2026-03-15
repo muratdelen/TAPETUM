@@ -262,7 +262,7 @@ A --> H[TAPETUM Framework]
 H --> I[Retinex / DecomNet Decomposition]
 I --> J[Reflectance R]
 I --> K[Illumination L]
-K --> L[Tapetum Reflection Module]
+K --> L[Tapetum Attention Module]
 L --> M[Enhanced Illumination Lt]
 J --> N[Reconstruction]
 M --> N
