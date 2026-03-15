@@ -44,7 +44,7 @@ A[Low-Light Image] --> B[Retinex Decomposition]
 B --> C[Reflectance R]
 B --> D[Illumination L]
 
-D --> E[Tapetum Reflection Module]
+D --> E[Tapetum Attention Module]
 E --> F[Enhanced Illumination Lt]
 
 C --> G[Image Reconstruction]
@@ -63,7 +63,7 @@ A[Input Image I] --> B[Retinex Decomposition]
 B --> C[Reflectance R]
 B --> D[Illumination L]
 
-D --> E[Tapetum Reflection]
+D --> E[Tapetum Attention Module]
 E --> F[Enhanced Illumination Lt]
 
 C --> G[Reconstruction]
@@ -117,7 +117,7 @@ B --> D[Illumination L]
 
 C --> G[Reconstruction]
 
-D --> E[Tapetum Reflection Module]
+D --> E[Tapetum Attention Module]
 E --> F[Enhanced Illumination]
 F --> G
 
