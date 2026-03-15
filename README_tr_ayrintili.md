@@ -1392,3 +1392,111 @@ Lc(x) = Lc(x)(1 + λTc(x))
 ∈ {R,G,B} için .
 
 Bu spektral amplifikasyon parlaklığı artırabilir (daha yüksek PSNR), ancak yapısal benzerliği biraz bozabilir (daha düşük SSIM), bu da deneylerde gözlemlenen metrik farklılıkları açıklar.
+
+
+---
+
+# Çalışan Diyagramlar ve Formüller
+
+## TAPETUM Pipeline
+
+```mermaid
+flowchart LR
+A["Düşük Işık Görüntüsü I(x)"]
+A --> B["Retinex / DecomNet Ayrıştırması"]
+B --> C["Yansıma R(x)"]
+B --> D["Aydınlatma L(x)"]
+D --> E["Tapetum Attention T(x)"]
+E --> F["Aydınlatma Amplifikasyonu Lt(x)=L(x)(1+λT(x))"]
+C --> G["Yeniden Yapılanma"]
+F --> G
+G --> H["Enhanced Image I_enh(x)"]
+```
+
+## Retinex vs TAPETUM
+
+```mermaid
+flowchart LR
+
+subgraph Retinex
+A1["Low Light Image"]
+A1 --> B1["Retinex Decomposition"]
+B1 --> C1["Reflectance R"]
+B1 --> D1["Illumination L"]
+C1 --> E1["Reconstruction"]
+D1 --> E1
+E1 --> F1["Enhanced Image"]
+end
+
+subgraph TAPETUM
+A2["Low Light Image"]
+A2 --> B2["Retinex / DecomNet"]
+B2 --> C2["Reflectance R"]
+B2 --> D2["Illumination L"]
+D2 --> E2["Tapetum Attention"]
+E2 --> F2["Lt(x)=L(x)(1+λT(x))"]
+C2 --> G2["Reconstruction"]
+F2 --> G2
+G2 --> H2["Enhanced Image"]
+end
+```
+
+## Tapetum RGB Pipeline
+
+```mermaid
+flowchart LR
+
+A["Input Image"]
+A --> B["Retinex / DecomNet Decomposition"]
+B --> C["Reflectance R"]
+B --> D["Illumination L"]
+
+D --> ER["Tapetum R"]
+D --> EG["Tapetum G"]
+D --> EB["Tapetum B"]
+
+ER --> LR["L_R(x)(1+λT_R(x))"]
+EG --> LG["L_G(x)(1+λT_G(x))"]
+EB --> LB["L_B(x)(1+λT_B(x))"]
+
+C --> O["Reconstruction"]
+
+LR --> O
+LG --> O
+LB --> O
+
+O --> P["Enhanced RGB Image"]
+```
+
+## Matematiksel Model
+
+### Retinex
+
+$$
+I(x) = R(x)L(x)
+$$
+
+### Tapetum Attention
+
+$$
+T(x) = \sigma(f(L(x))) (1 - L(x))
+$$
+
+### Illumination Enhancement
+
+$$
+L_t(x) = L(x)(1 + \lambda T(x))
+$$
+
+### Final Reconstruction
+
+$$
+I_{enh}(x) = R(x)L(x)(1 + \lambda T(x))
+$$
+
+### RGB Model
+
+$$
+L_t^c(x) = L^c(x)(1 + \lambda T_c(x)), \quad c \in \{R,G,B\}
+$$
+
