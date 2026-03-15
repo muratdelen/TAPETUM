@@ -62,7 +62,7 @@ Bu depoda dört ana model varyantı bulunmaktadır:
 TAPETUM çerçevesi, düşük ışık koşullarında görüntü iyileştirme için biyolojik olarak esinlenilmiş bir mekanizma sunmaktadır .
 Projenin temel katkıları aşağıda özetlenmiştir.
 
-deniz kızı
+```mermaid flowchart
 akış şeması LR
 
 Biyolojik İlham
@@ -101,7 +101,7 @@ PSNR ve SSIM metriklerini kullanarak LOLv2 veri kümesinde güçlü performans s
 
 ## Yöntem Karşılaştırması: Retinex vs TAPETUM vs TAPETUM RGB
 
-deniz kızı
+```mermaid flowchart
 akış şeması LR
 
 alt grafik Klasik_Retinex
@@ -117,7 +117,7 @@ C --> F["Yeniden Yapılanma"]
 E --> F
 
 F --> G["Geliştirilmiş Görüntü"]
-son
+end
 
 alt grafik TAPETUM_Çerçevesi
 H["Düşük Işık Görüntüsü I(x)"]
@@ -134,7 +134,7 @@ J --> N["Yeniden Yapılanma"]
 M --> N
 
 N --> O["Geliştirilmiş Görüntü"]
-son
+end
 
 alt grafik TAPETUM_RGB
 P["Düşük Işık Görüntüsü I(x)"]
@@ -158,13 +158,13 @@ LG --> U
 LB --> U
 
 U --> V["Geliştirilmiş RGB Görüntüsü"]
-son
+end
 ```
 
 
 ## TAPETUM Komple Mimari
 
-deniz kızı
+```mermaid flowchart
 akış şeması LR
 
 Düşük Işıkta Görüntü
@@ -195,7 +195,7 @@ I_enh(x)=R(x)L(x)(1+λT(x))"]
 
 ### TAPETUM RGB Mimari
 
-deniz kızı
+```mermaid flowchart
 akış şeması LR
 
 A["Düşük Işıkta Görüntü"]
@@ -240,7 +240,7 @@ Temel fikir basit:
 
 ## Çerçeve Mimarisi
 
-deniz kızı
+```mermaid flowchart
 akış şeması TD
 
 A [Düşük Işıkta Görüntü] --> B [Retinex Ayrıştırması]
@@ -259,7 +259,7 @@ G --> H [Geliştirilmiş Görüntü]
 
 ### Retinex-Tapetum
 
-deniz kızı
+```mermaid flowchart
 akış şeması LR
 
 A[Giriş Görüntüsü I] --> B[Retinex Ayrıştırması]
@@ -278,7 +278,7 @@ G --> H [Geliştirilmiş Görüntü]
 
 ### Retinex-Tapetum-RGB
 
-deniz kızı
+```mermaid flowchart
 akış şeması TD
 
 A[Giriş Görüntüsü]
@@ -309,7 +309,7 @@ O --> F[Geliştirilmiş RGB Görüntü]
 
 ### TAPETUM'un Tam Boru Hattı
 
-deniz kızı
+```mermaid flowchart
 akış şeması TD
 
 [Düşük Işıkta Çekilmiş Görüntü]
@@ -336,7 +336,7 @@ G --> H [Geliştirilmiş Görüntü]
 
 TAPETUM çerçevesi, Retinex ayrıştırmasını, Tapetum'dan ilham alan aydınlatma iyileştirmesini ve isteğe bağlı RGB kanal duyarlı modülasyonunu entegre eder.
 
-deniz kızı
+```mermaid flowchart
 akış şeması TD
 
 Düşük Işık Girişi
@@ -489,7 +489,7 @@ I_{enh}(x) = R(x)\odot L(x)\odot (1+\lambda T_{rgb}(x))
 
 ### Katkı Diyagramı
 
-deniz kızı
+```mermaid flowchart
 akış şeması LR
 
 A[Klasik Retinex Yöntemleri] --> B[RetinexNet]
@@ -514,7 +514,7 @@ J --> K [Geliştirilmiş Düşük Işık Görüntüleri]
 
 ### TAPETUM vs RetinexNet
 
-deniz kızı
+```mermaid flowchart
 akış şeması LR
 
 [Düşük Işıkta Çekilmiş Görüntü]
@@ -676,7 +676,7 @@ TAPETUM çerçevesi, biyolojik olarak esinlenilmiş bir aydınlatma yansıtma me
 
 ### Metot Akışı
 
-deniz kızı
+```mermaid flowchart
 akış şeması LR
 
 A["Düşük Işık Görüntüsü I(x)"] --> B["Retinex / DecomNet Ayrıştırması"]
@@ -702,7 +702,7 @@ Ienh(x)=R(x)L(x)(1+λT(x))"]
 
 ### Kağıt Tarzı Yöntem Şekli
 
-deniz kızı
+```mermaid flowchart
 akış şeması LR
 
 Düşük Işıkta Görüntü
@@ -733,7 +733,7 @@ Ienh(x)=R(x)L(x)(1+λT(x))"]
 
 ### Model Varyantlarına Genel Bakış
 
-deniz kızı
+```mermaid flowchart
 akış şeması TD
 
 A["Düşük Işıkta Görüntü"]
@@ -781,7 +781,7 @@ I_{enh}(x)=R(x)\odot L(x)\odot(1+\lambda T_{rgb}(x))
 
 ## Eğitim Süreci
 
-deniz kızı
+```mermaid flowchart
 akış şeması TD
 
 Bir["Veri kümesi
@@ -808,7 +808,7 @@ G --> H["Model Güncellemesi"]
 
 Retinex bazlı yöntemler ve TAPETUM ailesini karşılaştıran örnek nitel sonuçlar.
 
-deniz kızı
+```mermaid flowchart
 akış şeması LR
 
 A["Düşük Işık Girişi"] --> B["RetinexNet"]
@@ -906,7 +906,7 @@ Aşağıdaki ortalama sonuçlar, veri deposundaki ölçüm tablolarından elde e
 TAPETUM çerçevesi, gece hayvanlarında gözlemlenen biyolojik foton yansıma mekanizmalarından esinlenmiştir.
 Aşağıdaki kavramsal şema, biyolojik fikrin hesaplamalı modele nasıl dönüştüğünü göstermektedir.
 
-deniz kızı
+```mermaid flowchart
 akış şeması LR
 
 A["Tapetum Lucidum
@@ -955,7 +955,7 @@ TAPETUM modeli bu kavramı bir görüntü iyileştirme işlem hattına dönüşt
 2. **Tapetum dikkati** daha karanlık bölgelerdeki aydınlatmayı artırır.
 3. **Yeniden yapılandırma**, iyileştirilmiş görünürlüğe sahip gelişmiş görüntüyü üretir.
 
-deniz kızı
+```mermaid flowchart
 akış şeması LR
 
 A["Düşük Işıklı Görüntü"] --> B["Retinex / DecomNet Ayrıştırması"]
