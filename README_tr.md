@@ -139,13 +139,17 @@ Adımlar:
 
 ---
 
-# Atıf
+## Alıntı
 
-@article{{delen2026tapetum,
-title={{Tapetum-Retinex: A Bio-Inspired Retinex Framework for Low-Light Image Enhancement}},
-author={{Delen, Murat}},
-year={{2026}}
-}}
+Bu depoyu araştırmanızda kullanıyorsanız şu şekilde atıf yapabilirsiniz:
+
+```bibtex
+@article{delen2026tapetum,
+  title={Tapetum-Retinex: A Bio-Inspired Retinex Framework for Low-Light Image Enhancement},
+  author={Delen, Murat},
+  year={2026}
+}
+```
 
 ---
 

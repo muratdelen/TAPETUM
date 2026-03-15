@@ -482,7 +482,7 @@ Bu depoyu araştırmanızda kullanıyorsanız şu şekilde atıf yapabilirsiniz:
 
 ```bibtex
 @article{delen2026tapetum,
-  title={Tapetum-Retinex: Düşük Işıkta Görüntü İyileştirme için Biyolojik Esinli Retinex Çerçevesi},
+  title={Tapetum-Retinex: A Bio-Inspired Retinex Framework for Low-Light Image Enhancement},
   author={Delen, Murat},
   year={2026}
 }
