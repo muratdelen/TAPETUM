@@ -1,0 +1,6 @@
+﻿model,best_psnr_count,best_ssim_count,best_mae_count,best_mse_count,best_rmse_count,best_lpips_count
+DecomNetRetinexTapetum,39,69,0,0,0,44
+DecomNetRetinexTapetumRGB,38,19,0,0,0,4
+RetinexNet,15,3,100,100,100,0
+RetinexTapetumRGB,8,9,0,0,0,52
+RetinexTapetum,0,0,0,0,0,0

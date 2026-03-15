@@ -1,0 +1,5 @@
+model,train_status,test_status,best_epoch,best_val_psnr,psnr,ssim,mae,mse,lpips,metrics_source,train_log,test_log
+RetinexTapetum,OK,OK,,,11.98,0.7454,,,,parsed_from_logs,/content/TAPETUM/comparison_results/RetinexTapetum/train_log.txt,/content/TAPETUM/comparison_results/RetinexTapetum/test_log.txt
+RetinexTapetumRGB,OK,OK,,,12.49,,,,,parsed_from_logs,/content/TAPETUM/comparison_results/RetinexTapetumRGB/train_log.txt,/content/TAPETUM/comparison_results/RetinexTapetumRGB/test_log.txt
+DecomNetRetinexTapetum,OK,OK,,,18.96,,,,,parsed_from_logs,/content/TAPETUM/comparison_results/DecomNetRetinexTapetum/train_log.txt,/content/TAPETUM/comparison_results/DecomNetRetinexTapetum/test_log.txt
+DecomNetRetinexTapetumRGB,OK,OK,,,19.06,,,,,parsed_from_logs,/content/TAPETUM/comparison_results/DecomNetRetinexTapetumRGB/train_log.txt,/content/TAPETUM/comparison_results/DecomNetRetinexTapetumRGB/test_log.txt
