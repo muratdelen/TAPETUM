@@ -44,7 +44,7 @@ A[Low-Light Image] --> B[Retinex Decomposition]
 B --> C[Reflectance R]
 B --> D[Illumination L]
 
-D --> E[Tapetum Illumination Module]
+D --> E[Tapetum Reflection Module]
 E --> F[Enhanced Illumination Lt]
 
 C --> G[Image Reconstruction]
@@ -63,7 +63,7 @@ A[Input Image I] --> B[Retinex Decomposition]
 B --> C[Reflectance R]
 B --> D[Illumination L]
 
-D --> E[Tapetum Illumination]
+D --> E[Tapetum Reflection]
 E --> F[Enhanced Illumination Lt]
 
 C --> G[Reconstruction]
@@ -117,7 +117,7 @@ B --> D[Illumination L]
 
 C --> G[Reconstruction]
 
-D --> E[Tapetum Illumination Module]
+D --> E[Tapetum Reflection Module]
 E --> F[Enhanced Illumination]
 F --> G
 
@@ -126,93 +126,89 @@ G --> H[Enhanced Image]
 
 ---
 
+
 ## Mathematical Formulation
 
 ### Classical Retinex Model
 
 ```math
-I(x)=R(x)\cdot L(x)
+I(x) = R(x)\cdot L(x)
 ```
 
-where:
+where
 
-- `I(x)` is the observed low-light image
-- `R(x)` is the reflectance component
-- `L(x)` is the illumination component
+- I(x) is the observed low-light image
+- R(x) is the reflectance component
+- L(x) is the illumination component
+
+---
 
 ### Retinex-Tapetum
 
-The Retinex-Tapetum variant enhances the illumination branch with a Tapetum-inspired attention map. The attention map is defined as:
+Tapetum attention map:
 
 ```math
-T(x)=\sigma(f(L(x)))\,(1-L(x))
+T(x) = \sigma(f(L(x)))\,(1-L(x))
 ```
 
-where `f(·)` denotes the Tapetum attention predictor and `σ(·)` is the sigmoid activation.
-
-The enhanced illumination is then computed by:
+Enhanced illumination:
 
 ```math
-L_t(x)=L(x)\cdotigl(1+\lambda T(x)igr)
+L_t(x) = L(x)\,(1+\lambda T(x))
 ```
 
-and the final enhanced image is reconstructed as:
+Reconstruction:
 
 ```math
-I_{enh}(x)=R(x)\cdot L_t(x)
+I_{enh}(x) = R(x)\cdot L_t(x)
 ```
 
-Substituting `L_t(x)` gives the compact form:
+Compact formulation:
 
 ```math
-I_{enh}(x)=R(x)\cdot L(x)\cdotigl(1+\lambda T(x)igr)
+I_{enh}(x) = R(x)\cdot L(x)\,(1+\lambda T(x))
 ```
+
+---
 
 ### Retinex-Tapetum-RGB
 
-For channel-aware enhancement, the RGB variant introduces channel-specific modulation on top of a shared Tapetum base attention:
+Base attention:
 
 ```math
-T_{base}(x)=\sigma(f(L(x)))\odot(1-L(x))
+T_{base}(x) = \sigma(f(L(x)))\odot (1-L(x))
 ```
+
+Channel modulation:
 
 ```math
-g_c = 1 + s	anh(lpha_c), \quad c \in \{R,G,B\}
+g_c = 1 + s\tanh(\alpha_c), \quad c \in \{R,G,B\}
 ```
+
+Channel-specific Tapetum map:
 
 ```math
-T^{rgb}_c(x)=T_{base,c}(x)\cdot g_c
+T^{rgb}_c(x) = T_{base,c}(x)\cdot g_c
 ```
 
-The channel-wise enhanced illumination becomes:
+Enhanced illumination per channel:
 
 ```math
-L_t^c(x)=L^c(x)\cdotigl(1+\lambda T^{rgb}_c(x)igr), \quad c \in \{R,G,B\}
+L_t^c(x) = L^c(x)\,(1+\lambda T^{rgb}_c(x)), \quad c \in \{R,G,B\}
 ```
 
-and reconstruction is performed as:
+Reconstruction:
 
 ```math
-I_{enh}^c(x)=R^c(x)\cdot L_t^c(x)
+I_{enh}^c(x) = R^c(x)\cdot L_t^c(x)
 ```
 
-Equivalently, the RGB output can be written in compact vector form as:
+Vector form:
 
 ```math
-I_{enh}(x)=R(x)\odot L(x)\odotigl(1+\lambda T_{rgb}(x)igr)
+I_{enh}(x) = R(x)\odot L(x)\odot (1+\lambda T_{rgb}(x))
 ```
 
-### Learned Decomposition Extension
-
-For the DecomNet-based variants, the Retinex components are estimated by a learned decomposition network:
-
-```math
-(R,L)=DecomNet(I)
-```
-
-This learned decomposition replaces classical hand-crafted separation and improves reflectance–illumination estimation.
-
----
 
 ## Main Contributions
 
