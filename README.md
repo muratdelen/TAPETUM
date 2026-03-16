@@ -788,15 +788,27 @@ I_{enh}(x)=R(x)L(x)(1+\lambda T(x))
 I_{enh}(x)=R(x)\odot L(x)\odot(1+\lambda T_{rgb}(x))
 ```
 
-### Comparison Visualization Structure
+## Visual Comparison
 
-```markdown
-### Comparison Visualization Structure
+The following figure presents qualitative comparison results on the **LOLv2 Real Captured dataset**.
+
+Low-light images are enhanced using the proposed **Tapetum-based Retinex models** inspired by biological night vision mechanisms.
 
 | Low-Light Input | Ground Truth | RetinexNet | RetinexTapetum | TapetumRGB | DecomNetTapetum | DecomNetTapetumRGB |
-|------|------|------|------|------|------|------|
+|---|---|---|---|---|---|---|
 | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/datasets/LoLv2/LOL-v2/Real_captured/Test/Low/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/datasets/LoLv2/LOL-v2/Real_captured/Test/Normal/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/RetinexNet/results/Test/00750_S.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/retinex-tapetum/results/Test/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/RetinexTapetumRGB/results/Test/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/DecomNetRetinexTapetum/results/Test/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/DecomNetRetinexTapetumRGB/results/Test/00750.png) |
-```
+
+### Figure Description
+
+From left to right:
+
+1. **Low-Light Input** – Original low-light image from the LOLv2 dataset  
+2. **Ground Truth** – Reference normal-light image  
+3. **RetinexNet** – Baseline Retinex model  
+4. **RetinexTapetum** – Retinex enhanced with Tapetum photon reflection modeling  
+5. **TapetumRGB** – Channel-aware Tapetum reflection mechanism  
+6. **DecomNetTapetum** – Learned decomposition with Tapetum enhancement  
+7. **DecomNetTapetumRGB** – Full model with RGB adaptive Tapetum attention
 
 
 ## Training Pipeline
