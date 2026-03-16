@@ -695,7 +695,9 @@ The TAPETUM framework extends classical Retinex-based low-light enhancement by i
 ```mermaid
 flowchart LR
 
-A["Low-Light Image I(x)"] --> B["Retinex / DecomNet Decomposition"]
+A["Low-Light Image I(x)"] --> B["Retinex / DecomNet Decomposition 
+I(x) = R(x).L(x)"]
+
 B --> C["Reflectance R(x)"]
 B --> D["Illumination L(x)"]
 
@@ -725,7 +727,9 @@ A["Low-Light Image
 I(x)"]
 
 A --> B["Retinex / DecomNet
-Decomposition"]
+Decomposition
+I(x) = R(x).L(x)"]
+
 
 B --> C["Reflectance
 R(x)"]
