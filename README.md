@@ -65,18 +65,23 @@ Key contributions of the project are summarized below.
 ```mermaid
 flowchart LR
 
-A["Biological Inspiration
-(Tapetum Lucidum)"]
+A["Low-Light Image Problem"]
 
-A --> B["Photon Reflection Mechanism"]
+A --> B["Retinex Image Formation
+I = R · L"]
 
-B --> C["Illumination Amplification Model"]
+B --> C["Retinex / DecomNet Framework"]
 
-C --> D["Tapetum Attention Module"]
+C --> D["Biological Inspiration
+Tapetum Lucidum"]
 
-D --> E["Retinex / DecomNet Integration"]
+D --> E["Photon Reflection Mechanism"]
 
-E --> F["Enhanced Low-Light Images"]
+E --> F["Tapetum Illumination Amplification"]
+
+F --> G["Tapetum Attention Module"]
+
+G --> K["Enhanced Low-Light Images"]
 ```
 
 ### Key Contributions
