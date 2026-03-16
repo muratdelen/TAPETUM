@@ -124,6 +124,11 @@ E --> F
 F --> G["Enhanced Image"]
 end
 
+```
+
+```mermaid
+flowchart LR
+
 subgraph TAPETUM_Framework
 H["Low-Light Image I(x)"]
 
@@ -140,6 +145,12 @@ M --> N
 
 N --> O["Enhanced Image"]
 end
+
+```
+
+```mermaid
+flowchart LR
+
 
 subgraph TAPETUM_RGB
 P["Low-Light Image I(x)"]
