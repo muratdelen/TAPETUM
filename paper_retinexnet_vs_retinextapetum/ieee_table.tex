@@ -1,0 +1,15 @@
+\begin{table*}[t]
+\centering
+\caption{Quantitative comparison between RetinexNet and RetinexTapetum on the LOL-v2 Real Captured test set. Higher is better for PSNR, SSIM, and UIQ; lower is better for MSE, MAE, RMSE, LPIPS, NIQE, and BRISQUE.}
+\label{tab:retinexnet_retinextapetum_full}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccccc}
+\hline
+Method & PSNR $\uparrow$ & SSIM $\uparrow$ & MSE $\downarrow$ & MAE $\downarrow$ & RMSE $\downarrow$ & UIQ $\uparrow$ & LPIPS $\downarrow$ & NIQE $\downarrow$ & BRISQUE $\downarrow$ \\
+\hline
+RetinexNet & 15.9504 & 0.6524 & 1844.4989 & 35.5913 & 41.7831 & 0.6505 & 0.4128 & - & - \\
+RetinexTapetum & \textbf{19.2473} & \textbf{0.7734} & \textbf{997.9153} & \textbf{24.7627} & \textbf{29.7785} & \textbf{0.7754} & \textbf{0.3669} & - & - \\
+\hline
+\end{tabular}%
+}
+\end{table*}
