@@ -1,6 +1,0 @@
-model_checkpoint_path: "RetinexNet-Relight-4300"
-all_model_checkpoint_paths: "RetinexNet-Relight-860"
-all_model_checkpoint_paths: "RetinexNet-Relight-1720"
-all_model_checkpoint_paths: "RetinexNet-Relight-2580"
-all_model_checkpoint_paths: "RetinexNet-Relight-3440"
-all_model_checkpoint_paths: "RetinexNet-Relight-4300"
