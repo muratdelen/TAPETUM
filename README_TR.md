@@ -97,16 +97,34 @@ G --> H["İyileştirilmiş Düşük Işık Görüntüsü"]
 
 ```mermaid
 flowchart LR
-
 subgraph Classical_Retinex
+
 A["Düşük Işık Görüntüsü I(x)"]
-A --> B["Retinex Ayrıştırması"]
-B --> C["Yansıma R(x)"]
-B --> D["Aydınlanma L(x)"]
-D --> E["Aydınlanma Düzenleme"]
-C --> F["Yeniden Oluşturma"]
-E --> F
-F --> G["İyileştirilmiş Görüntü"]
+
+A --> B["Log Dönüşümü
+log I(x)"]
+
+B --> C["Ayrıştırma
+log I(x) = log R(x) + log L(x)"]
+
+C --> D["Yansıma (Reflectance)
+log R(x) - High Frequency"]
+
+C --> E["Aydınlanma (Illumination)
+log L(x) - Low Frequency"]
+
+E --> F["Aydınlanma İyileştirme
+(Smoothing / Enhancement)"]
+
+D --> G["Yansıma Koruma"]
+
+F --> H["Exp Dönüşümü"]
+
+G --> I["Yeniden Birleştirme"]
+H --> I
+
+I --> J["İyileştirilmiş Görüntü"]
+
 end
 ```
 
@@ -117,7 +135,8 @@ flowchart LR
 
 subgraph TAPETUM_Framework
 H["Düşük Işık Görüntüsü I(x)"]
-H --> I["Retinex / DecomNet"]
+H --> I["Retinex
+I(x)=R(x)L(x)"]
 I --> J["Yansıma R(x)"]
 I --> K["Aydınlanma L(x)"]
 K --> L["Tapetum Dikkat Haritası T(x)"]
@@ -126,34 +145,6 @@ Lt(x)=L(x)(1+λT(x))"]
 J --> N["Yeniden Oluşturma"]
 M --> N
 N --> O["İyileştirilmiş Görüntü"]
-end
-```
-
-### TAPETUM RGB
-
-```mermaid
-flowchart LR
-
-subgraph TAPETUM_RGB
-P["Düşük Işık Görüntüsü I(x)"]
-P --> Q["Ayrıştırma"]
-Q --> R["Yansıma R(x)"]
-Q --> S["Aydınlanma L(x)"]
-
-S --> TR["Tapetum R"]
-S --> TG["Tapetum G"]
-S --> TB["Tapetum B"]
-
-TR --> LR["L_R(x)(1+λT_R(x))"]
-TG --> LG["L_G(x)(1+λT_G(x))"]
-TB --> LB["L_B(x)(1+λT_B(x))"]
-
-R --> U["Yeniden Oluşturma"]
-LR --> U
-LG --> U
-LB --> U
-
-U --> V["İyileştirilmiş RGB Görüntü"]
 end
 ```
 
@@ -170,7 +161,8 @@ A["Düşük Işık Görüntüsü
 I(x)"]
 
 A --> B["Görüntü Ayrıştırma
-Retinex / DecomNet"]
+Retinex
+I(x)=R(x)L(x) "]
 
 B --> C["Yansıma
 R(x)"]
@@ -190,128 +182,9 @@ F --> G
 G --> H["İyileştirilmiş Görüntü
 I_enh(x)=R(x)L(x)(1+λT(x))"]
 ```
-
-### TAPETUM RGB mimarisi
-
-```mermaid
-flowchart LR
-
-A["Düşük Işık Görüntüsü"]
-A --> B["Retinex / DecomNet Ayrıştırması"]
-B --> C["Yansıma R"]
-B --> D["Aydınlanma L"]
-D --> E["Tapetum RGB Modülü"]
-
-E --> ER["Tapetum R"]
-E --> EG["Tapetum G"]
-E --> EB["Tapetum B"]
-
-ER --> LR["L_R(x)(1+λT_R(x))"]
-EG --> LG["L_G(x)(1+λT_G(x))"]
-EB --> LB["L_B(x)(1+λT_B(x))"]
-
-C --> O["Yeniden Oluşturma"]
-LR --> O
-LG --> O
-LB --> O
-
-O --> P["İyileştirilmiş RGB Görüntü"]
-```
-
 ---
 
-## Yöntemin Genel Akışı
 
-TAPETUM yaklaşımı üç temel adıma dayanır:
-
-1. Girdi görüntüsünü **yansıma** ve **aydınlanma** bileşenlerine ayırmak
-2. Aydınlanmayı **Tapetum esinli dikkat ve güçlendirme mekanizması** ile iyileştirmek
-3. Son görüntüyü yeniden oluşturarak görünürlüğü artırmak
-
-```mermaid
-flowchart TD
-
-A[Düşük Işık Görüntüsü] --> B[Retinex Ayrıştırması]
-B --> C[Yansıma R]
-B --> D[Aydınlanma L]
-D --> E[Tapetum Dikkat Modülü]
-E --> F[Güçlendirilmiş Aydınlanma Lt]
-C --> G[Yeniden Oluşturma]
-F --> G
-G --> H[İyileştirilmiş Görüntü]
-```
-
----
-
-## Tam TAPETUM Çatısı
-
-```mermaid
-flowchart TD
-
-A["Düşük Işık Girdisi
-I(x)"] --> B["Ayrıştırma"]
-
-B --> C1["Retinex
-I(x)=R(x)L(x)"]
-B --> C2["DecomNet
-(R,L)=DecomNet(I)"]
-
-C1 --> D1["RetinexTapetum"]
-C1 --> D2["RetinexTapetumRGB"]
-
-C2 --> D3["DecomNetRetinexTapetum"]
-C2 --> D4["DecomNetRetinexTapetumRGB"]
-
-D1 --> E1["T(x)=σ(f(L(x)))(1-L(x))"]
-E1 --> F1["Lt(x)=L(x)(1+λT(x))"]
-F1 --> G1["Ienh(x)=R(x)Lt(x)"]
-
-D2 --> E2["Tbase(x)=σ(f(L(x)))⊙(1-L(x))"]
-E2 --> F2["gc=1+s tanh(αc)"]
-F2 --> G2["Trgb,c(x)=Tbase,c(x)gc"]
-G2 --> H2["Lt,c(x)=Lc(x)(1+λTrgb,c(x))"]
-H2 --> I2["Ienh,c(x)=Rc(x)Lt,c(x)"]
-
-D3 --> E3["T(x)=σ(f(L(x)))(1-L(x))"]
-E3 --> F3["Lt(x)=L(x)(1+λT(x))"]
-F3 --> G3["Ienh(x)=R(x)Lt(x)"]
-
-D4 --> E4["Tbase(x)=σ(f(L(x)))⊙(1-L(x))"]
-E4 --> F4["gc=1+s tanh(αc)"]
-F4 --> G4["Trgb,c(x)=Tbase,c(x)gc"]
-G4 --> H4["Lt,c(x)=Lc(x)(1+λTrgb,c(x))"]
-H4 --> I4["Ienh,c(x)=Rc(x)Lt,c(x)"]
-
-G1 --> Z["İyileştirilmiş Çıktı"]
-I2 --> Z
-G3 --> Z
-I4 --> Z
-```
-
----
-
-## Model Ailesi
-
-### Model tablosu
-
-| Model | Ayrıştırma | Tapetum | RGB Modülasyonu |
-|---|---|---|---|
-| RetinexTapetum | Retinex | ✓ | ✗ |
-| RetinexTapetumRGB | Retinex | ✓ | ✓ |
-| DecomNetRetinexTapetum | DecomNet | ✓ | ✗ |
-| DecomNetRetinexTapetumRGB | DecomNet | ✓ | ✓ |
-
-### Model açıklamaları
-
-| Model | Açıklama |
-|---|---|
-| **RetinexTapetum** | Tapetum esinli aydınlanma yansıması ile Retinex ayrıştırması |
-| **RetinexTapetumRGB** | Kanal-duyarlı RGB Tapetum yansıması |
-| **DecomNetRetinexTapetum** | Öğrenilmiş ayrıştırma + Tapetum yansıması |
-| **DecomNetRetinexTapetumRGB** | Öğrenilmiş ayrıştırma + RGB Tapetum yansıması |
-| **RetinexNet** | Temel karşılaştırma modeli |
-
----
 
 ## Matematiksel Formülasyon
 
@@ -353,44 +226,6 @@ Kompakt form:
 I_{enh}(x) = R(x)\cdot L(x)\,(1+\lambda T(x))
 ```
 
-### Retinex-Tapetum-RGB
-
-Temel dikkat haritası:
-
-```math
-T_{base}(x) = \sigma(f(L(x)))\odot (1-L(x))
-```
-
-Kanal modülasyonu:
-
-```math
-g_c = 1 + s\tanh(\alpha_c), \quad c \in \{R,G,B\}
-```
-
-Kanala özgü Tapetum haritası:
-
-```math
-T^{rgb}_c(x) = T_{base,c}(x)\cdot g_c
-```
-
-Kanala özgü güçlendirilmiş aydınlanma:
-
-```math
-L_t^c(x) = L^c(x)\,(1+\lambda T^{rgb}_c(x)), \quad c \in \{R,G,B\}
-```
-
-Yeniden oluşturma:
-
-```math
-I_{enh}^c(x) = R^c(x)\cdot L_t^c(x)
-```
-
-Vektörel form:
-
-```math
-I_{enh}(x) = R(x)\odot L(x)\odot (1+\lambda T_{rgb}(x))
-```
-
 ### TAPETUM temel denklemleri
 
 ```math
@@ -407,11 +242,11 @@ I_{enh}(x)=R(x)\odot L(x)\odot(1+\lambda T_{rgb}(x))
 
 ```text
 TAPETUM/
-├── DecomNetRetinexTapetum/
-├── DecomNetRetinexTapetumRGB/
+├── RetinexTapetum/
+├── Retinex/
 ├── LoLv2/
 ├── Metrics/
-├── RetinexTapetumRGB/
+├── README_TR.md
 ├── datasets/
 ├── retinex-tapetum/
 └── README.md
@@ -491,26 +326,18 @@ Bu klasörlerde aşağıdaki güçlü örnekler bulunmaktadır:
 #### GitHub sonuç klasörleri
 
 - RetinexNet: `https://github.com/muratdelen/TAPETUM/tree/main/LoLv2/RetinexNet/results/Test`
-- RetinexTapetum: `https://github.com/muratdelen/TAPETUM/tree/main/LoLv2/retinex-tapetum/results/Test`
-- RetinexTapetumRGB: `https://github.com/muratdelen/TAPETUM/tree/main/LoLv2/RetinexTapetumRGB/results/Test`
-- DecomNetRetinexTapetum: `https://github.com/muratdelen/TAPETUM/tree/main/LoLv2/DecomNetRetinexTapetum/results/Test`
-- DecomNetRetinexTapetumRGB: `https://github.com/muratdelen/TAPETUM/tree/main/LoLv2/DecomNetRetinexTapetumRGB/results/Test`
+- RetinexTapetum: `https://github.com/muratdelen/TAPETUM/tree/main/LoLv2/RetinexTapetum/results/Test`
 
 #### Google Drive kaynakları
 
 - **TAPETUM İNDİRME**  
-  `https://drive.google.com/drive/folders/1EtT9abcdGIWMrzZ2zUGHB0A_gg7LMM8J?usp=sharing`
-- **RETINEXNET İNDİRME**  
-  `https://drive.google.com/drive/folders/1CKqjhcsQ5Fs8Btkn4jFoFXqCy9gZlh35?usp=sharing`
-- **RESULT LOLV2 İNDİRME**  
-  `https://drive.google.com/drive/folders/1dTq0xWTz0xJL2ngVaFqajoVVtfNE2VgY?usp=sharing`
+  `https://drive.google.com/drive/folders/13ayyEC3V1wWdX3AXdfL8y7VqnL8eTPFT?usp=sharing`
 
 ### Nitel gözlemler
 
-- DecomNet tabanlı TAPETUM varyantları, daha karanlık bölgeleri daha etkili biçimde geri kazanmaktadır.
-- RGB varyantı çoğu durumda renk dengesi ve spektral tutarlılığı iyileştirmektedir.
-- RetinexTapetum ve RetinexTapetumRGB, yöntem fikrini korusa da nicel performansları DecomNet tabanlı modellerin gerisinde kalmaktadır.
-- DecomNetRetinexTapetumRGB, parlaklık, detay ve renk doğruluğu açısından genellikle en dengeli görsel sonucu üretmektedir.
+- RetinexTapetum, daha karanlık bölgeleri daha etkili biçimde geri kazanmaktadır.
+- RÇoğu durumda renk dengesi ve spektral tutarlılığı iyileştirmektedir.
+- RetinexTapetum, parlaklık, detay ve renk doğruluğu açısından genellikle en dengeli görsel sonucu üretmektedir.
 
 ---
 
@@ -518,9 +345,9 @@ Bu klasörlerde aşağıdaki güçlü örnekler bulunmaktadır:
 
 Aşağıdaki şekil, **LOLv2 Real Captured** veri kümesi üzerindeki nitel karşılaştırma sonuçlarını göstermektedir.
 
-| Düşük Işık Girdisi | Ground Truth | RetinexNet | RetinexTapetum | TapetumRGB | DecomNetTapetum | DecomNetTapetumRGB |
-|---|---|---|---|---|---|---|
-| ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/datasets/LoLv2/LOL-v2/Real_captured/Test/Low/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/datasets/LoLv2/LOL-v2/Real_captured/Test/Normal/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/RetinexNet/results/Test/00750_S.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/retinex-tapetum/results/Test/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/RetinexTapetumRGB/results/Test/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/DecomNetRetinexTapetum/results/Test/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/DecomNetRetinexTapetumRGB/results/Test/00750.png) |
+| Düşük Işık Girdisi | Ground Truth | RetinexNet | RetinexTapetum | 
+|---|---|---|---|
+| ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/datasets/LoLv2/LOL-v2/Real_captured/Test/Low/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/datasets/LoLv2/LOL-v2/Real_captured/Test/Normal/00750.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/RetinexNet/results/Test/00750_S.png) | ![](https://raw.githubusercontent.com/muratdelen/TAPETUM/main/LoLv2/RetinexTapetum/results/Test/00750.png) | ![]
 
 ### Şekil açıklaması
 
@@ -530,9 +357,6 @@ Soldan sağa:
 2. **Ground Truth** – Referans normal ışık görüntüsü  
 3. **RetinexNet** – Temel Retinex modeli  
 4. **RetinexTapetum** – Tapetum foton yansıma modellemesi ile güçlendirilmiş Retinex  
-5. **TapetumRGB** – Kanal-duyarlı Tapetum yansıma mekanizması  
-6. **DecomNetTapetum** – Tapetum iyileştirmesi ile öğrenilmiş ayrıştırma  
-7. **DecomNetTapetumRGB** – RGB uyarlamalı Tapetum dikkati içeren tam model
 
 ---
 
@@ -544,37 +368,26 @@ Aşağıdaki ortalama sonuçlar depo içindeki metrik tablolarından derlenmişt
 
 | Model | Eşleşen Dosya | PSNR ↑ | SSIM ↑ | MAE ↓ | MSE ↓ | RMSE ↓ | LPIPS ↓ |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **DecomNetRetinexTapetumRGB** | 100 | **19.2938** | 0.7632 | 24.6575 | 1009.2340 | 29.8147 | 0.3983 |
-| **DecomNetRetinexTapetum** | 100 | 19.2473 | **0.7734** | 24.7627 | 997.9153 | 29.7785 | 0.3669 |
+| **RetinexTapetum** | 100 | 19.2473 | **0.7734** | 24.7627 | 997.9153 | 29.7785 | 0.3669 |
 | RetinexNet | 100 | 15.9504 | 0.6524 | 0.1396 | 0.0284 | 0.1639 | N/A |
-| RetinexTapetumRGB | 100 | 12.4179 | 0.4208 | 62.0526 | 4733.0982 | 65.0186 | **0.3411** |
-| RetinexTapetum | 100 | 11.9131 | 0.3942 | 64.8876 | 5118.1268 | 68.1592 | 0.3541 |
 
 ### Sıralama özeti
 
 | Model | Toplam Sıra | PSNR Sırası | SSIM Sırası | MAE Sırası | MSE Sırası | RMSE Sırası | LPIPS Sırası |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| **DecomNetRetinexTapetum** | **13.0** | 2 | 1 | 3 | 2 | 2 | 3 |
+| **RetinexTapetum** | **13.0** | 2 | 1 | 3 | 2 | 2 | 3 |
 | **RetinexNet** | **13.0** | 3 | 3 | 1 | 1 | 1 | 4 |
-| DecomNetRetinexTapetumRGB | 15.0 | 1 | 2 | 2 | 3 | 3 | 4 |
-| RetinexTapetumRGB | 21.0 | 4 | 4 | 4 | 4 | 4 | 1 |
-| RetinexTapetum | 27.0 | 5 | 5 | 5 | 5 | 5 | 2 |
 
 ### Görüntü başına en iyi sonuç sayıları
 
 | Model | En İyi PSNR | En İyi SSIM | En İyi MAE | En İyi MSE | En İyi RMSE | En İyi LPIPS |
 |---|---:|---:|---:|---:|---:|---:|
-| **DecomNetRetinexTapetum** | **39** | **69** | 0 | 0 | 0 | 44 |
-| DecomNetRetinexTapetumRGB | 38 | 19 | 0 | 0 | 0 | 4 |
+| **RetinexTapetum** | **39** | **69** | 0 | 0 | 0 | 44 |
 | RetinexNet | 15 | 3 | **100** | **100** | **100** | 0 |
-| RetinexTapetumRGB | 8 | 9 | 0 | 0 | 0 | **52** |
-| RetinexTapetum | 0 | 0 | 0 | 0 | 0 | 0 |
 
 ### Yorum
 
-- **DecomNetRetinexTapetumRGB**, en yüksek ortalama **PSNR** değerini elde etmektedir.
-- **DecomNetRetinexTapetum**, en yüksek ortalama **SSIM** değerini elde etmektedir.
-- TAPETUM ailesi içinde en güçlü genel performans **DecomNet tabanlı varyantlardan** gelmektedir.
+- **RetinexTapetum**, en yüksek ortalama **PSNR** değerini elde etmektedir.
 - **RetinexNet** için MAE, MSE ve RMSE değerleri diğer modellere göre farklı bir ölçekten geliyor olabilir; bu nedenle dikkatli yorumlanmalıdır.
 
 ### Benchmark karşılaştırması
@@ -582,10 +395,7 @@ Aşağıdaki ortalama sonuçlar depo içindeki metrik tablolarından derlenmişt
 | Yöntem | PSNR ↑ | SSIM ↑ | Tür |
 |---|---:|---:|---|
 | RetinexNet | 15.95 | 0.652 | Retinex tabanlı derin model |
-| RetinexTapetum | 11.91 | 0.394 | Biyolojik esinli Retinex |
-| RetinexTapetumRGB | 12.42 | 0.421 | Kanal-duyarlı biyolojik esinli Retinex |
-| DecomNetRetinexTapetum | 19.25 | **0.773** | Öğrenilmiş Retinex + Tapetum |
-| **DecomNetRetinexTapetumRGB (TAPETUM)** | **19.29** | 0.763 | Tam TAPETUM modeli |
+| RetinexTapetum | **19.25** | 0.773 | Öğrenilmiş Retinex + Tapetum |
 
 ---
 
@@ -634,7 +444,7 @@ Bu süreç parlaklığı artırabilir; ancak saçılmaya bağlı olarak yapısal
 ```mermaid
 flowchart LR
 
-A["Düşük Işık Görüntüsü"] --> B["Retinex / DecomNet Ayrıştırması"]
+A["Düşük Işık Görüntüsü"] --> B["Retinex Ayrıştırması"]
 B --> C["Yansıma"]
 B --> D["Aydınlanma"]
 D --> E["Tapetum Dikkat Modülü"]
@@ -646,52 +456,6 @@ G --> H["İyileştirilmiş Görüntü"]
 
 ---
 
-## Metrik Farklarının Biyolojik Yorumu
-
-**DecomNetRetinexTapetumRGB** ile **DecomNetRetinexTapetum** arasındaki performans farkı, biyolojik sistemlerde görülen parlaklık-yapı ödünleşimi ile açıklanabilir.
-
-### Ren geyiği spektral uyumu
-
-Bazı hayvanlar, özellikle **ren geyikleri**, tapetum lucidum’un yansıtıcı özelliklerinde mevsimsel değişim gösterir. Kış aylarında daha kısa dalga boylarına, özellikle mavi bölgeye daha duyarlı hale gelirler. Bu durum düşük ışıkta daha fazla foton yakalanmasını sağlayabilir.
-
-### TAPETUM modellerine karşılığı
-
-#### DecomNetRetinexTapetumRGB
-
-RGB varyantı her renk kanalını bağımsız biçimde güçlendirir:
-
-```math
-L_t^c(x) = L^c(x)(1+\lambda T^{rgb}_c(x))
-```
-
-Bu yaklaşım:
-
-- piksel düzeyinde parlaklık geri kazanımını artırabilir
-- daha yüksek **PSNR** üretebilir
-- ancak kanal bazlı modülasyon nedeniyle yapısal tutarlılıkta küçük düşüşler oluşturabilir
-
-#### DecomNetRetinexTapetum
-
-Standart varyant tek bir aydınlanma haritası kullanır:
-
-```math
-L_t(x) = L(x)(1+\lambda T(x))
-```
-
-Bu yaklaşım:
-
-- daha kararlı uzamsal yapı üretir
-- kenar ve doku korunumunu artırabilir
-- daha yüksek **SSIM** ile sonuçlanabilir
-
-### Özet
-
-- **RGB Tapetum** → daha güçlü parlaklık geri kazanımı → daha yüksek PSNR
-- **Standart Tapetum** → daha güçlü yapısal koruma → daha yüksek SSIM
-
-Bu sonuç, biyolojik sistemlerde görülen ışık duyarlılığı ile yapısal doğruluk arasındaki ödünleşim ile uyumludur.
-
----
 
 ## Google Colab Hızlı Başlangıç
 
@@ -716,10 +480,8 @@ Not defteri aşağıdaki aşamaları içermektedir:
    ```
 
 3. **Tüm TAPETUM modellerini eğitme**
+   - `Retinex`
    - `RetinexTapetum`
-   - `RetinexTapetumRGB`
-   - `DecomNetRetinexTapetum`
-   - `DecomNetRetinexTapetumRGB`
 
 4. **Tüm TAPETUM modellerini test etme**
 
@@ -804,23 +566,6 @@ Depodaki değerlendirme kaynakları:
 
 ### Google Drive
 
-- **TAPETUM İNDİRME**  
-  `https://drive.google.com/drive/folders/1EtT9abcdGIWMrzZ2zUGHB0A_gg7LMM8J?usp=sharing`
-
-- **VERİ KÜMESİ İNDİRME**  
-  `https://drive.google.com/drive/folders/1QO2_buG32OjDI2w3Cg1_8e5MquEww6Ix?usp=sharing`
-
-- **RETINEXNET İNDİRME**  
-  `https://drive.google.com/drive/folders/1CKqjhcsQ5Fs8Btkn4jFoFXqCy9gZlh35?usp=sharing`
-
-- **RESULT LOLV2 İNDİRME**  
-  `https://drive.google.com/drive/folders/1dTq0xWTz0xJL2ngVaFqajoVVtfNE2VgY?usp=sharing`
-
-- **METRICS İNDİRME**  
-  `https://drive.google.com/drive/folders/13XOBg-1gWTgSrbhDkDteI1pIqVIdjCfE?usp=sharing`
-
----
-
 ## Atıf
 
 Bu depoyu çalışmanızda kullanırsanız aşağıdaki biçimde atıf yapabilirsiniz:
@@ -879,8 +624,6 @@ Son yıllarda biyolojik görme sistemlerinden ilham alan yaklaşımlar artmaktad
 Klasik Retinex tabanlı yöntemlere kıyasla TAPETUM şunları eklemektedir:
 
 - foton yansımasına dayalı aydınlanma güçlendirmesi
-- RGB kanal-duyarlı spektral iyileştirme
-- DecomNet ile öğrenilmiş ayrıştırma uyumluluğu
 
 Bu sayede TAPETUM, **biyolojik esin ile derin Retinex modellemesini** bir araya getirmektedir.
 
@@ -941,12 +684,3 @@ Burada:
 - \(T(x)\): Tapetum dikkat haritası
 - \(\lambda\): güçlendirme katsayısı
 
-### RGB spektral uyum
-
-Ren geyikleri gibi bazı hayvanların tapetum yapısında mevsimsel spektral değişimler görülür. Bu biyolojik gözlemden esinlenerek **Retinex-Tapetum RGB**, kanal bazlı aydınlanma güçlendirmesi uygular:
-
-```math
-L_c(x) = L_c(x)(1+\lambda T_c(x))
-```
-
-Bu yapı daha yüksek parlaklık sağlayabilir; ancak yapısal benzerlikte kısmi ödünleşim oluşturabilir.
