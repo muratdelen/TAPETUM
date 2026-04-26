@@ -1,136 +1,113 @@
-# TAPETUM: Bio-Inspired Low-Light Image Enhancement
+# RetinexTapetum: Bio-Inspired Active Illumination Modeling for Efficient Low-Light Image Enhancement
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)]
 [![PyTorch](https://img.shields.io/badge/PyTorch-DeepLearning-red.svg)]
 [![Dataset](https://img.shields.io/badge/Dataset-LOLv2-green.svg)]
 
-TAPETUM is a **bio-inspired low-light image enhancement framework**  
-motivated by the **tapetum lucidum** photon reflection mechanism in nocturnal animals.
-
 ---
 
 ## 🚀 Overview
 
-Low-light image enhancement (LLIE) is fundamentally an **illumination recovery problem**.
+Low-light image enhancement (LLIE) remains a challenging problem due to poor visibility, noise amplification, and structural degradation under insufficient illumination.
 
-Classical Retinex:
+Retinex-based methods provide a physically grounded formulation by decomposing an image into reflectance and illumination components. However, most existing approaches treat illumination as a passive variable, which limits their effectiveness under complex and spatially non-uniform lighting conditions.
+
+In this work, we propose **RetinexTapetum**, a bio-inspired LLIE framework that reformulates illumination modeling as an **active enhancement process**.
+
+The method is inspired by the **Tapetum Lucidum**, which enhances vision in nocturnal animals by reusing photons under low-light conditions.
+
+---
+
+## 🧠 Method Formulation
+
+### Retinex Decomposition
+
 I(x) = R(x) · L(x)
 
-TAPETUM:
-L_t(x) = L(x)(1 + λT(x))  
+### Tapetum Attention
+
+T(x) = σ(f(L(x))) · (1 - L(x))
+
+### Illumination Enhancement
+
+L_t(x) = L(x) · (1 + λ T(x))
+
+λ = λ_max · σ(λ_param)
+
+### Reconstruction
+
 I_enh(x) = R(x) · L_t(x)
 
-👉 Key difference:
-
-- Retinex → passive illumination correction  
-- TAPETUM → **active and adaptive illumination amplification**
-
 ---
 
-## 🧠 Core Idea
+## ⚙️ Pipeline
 
-In biological systems (e.g., cats, deer):
-
-- Light is reflected back through the retina  
-- The same photons are reused  
-- Visibility improves in low-light conditions  
-
-Simplified model:
-I_eff = I + rI
-
-TAPETUM formulation:
-T(x) = sigmoid(f(L(x))) · (1 - L(x))  
-L_t(x) = L(x)(1 + λT(x))
-
----
-
-## ⚙️ Pipeline Comparison
-
-```mermaid
 flowchart LR
 
-subgraph Classical_Retinex
-A1["Low-Light Input"] --> B1["Decomposition"]
-B1 --> C1["Reflectance R"]
-B1 --> D1["Illumination L"]
-D1 --> E1["Global Illumination Adjustment"]
-C1 --> F1["Reconstruction"]
-E1 --> F1
-F1 --> G1["Output"]
-end
-
-subgraph RetinexTapetum
-A2["Low-Light Input"] --> B2["DecomNet"]
-B2 --> C2["R_low"]
-B2 --> D2["L_low"]
-D2 --> E2["TapetumAttentionNet"]
-E2 --> F2["T = sigmoid(raw)·(1-L)"]
-D2 --> H2["λ = λ_max·sigmoid(λ_param)"]
-F2 --> I2["L_t = L·(1+λT)"]
-H2 --> I2
-C2 --> J2["Reconstruction"]
-I2 --> J2
-J2 --> K2["Enhanced Output"]
-end
-```
-
----
-
-## 🧩 Architecture
-
-```mermaid
-flowchart LR
-
-A["Input I(x)"] --> B["Decomposition"]
-B --> C["Reflectance R(x)"]
-B --> D["Illumination L(x)"]
+A["Input"] --> B["Decomposition"]
+B --> C["Reflectance R"]
+B --> D["Illumination L"]
 
 D --> E["Tapetum Attention"]
-E --> F["Enhanced Illumination L_t(x)"]
+E --> F["T(x)"]
 
-C --> G["Reconstruction"]
-F --> G
+D --> G["Bounded λ"]
+F --> H["L_t = L(1+λT)"]
+G --> H
 
-G --> H["Output"]
-```
+C --> I["Reconstruction"]
+H --> I
 
----
-
-## 📊 Results (LOLv2 Real)
-
-| Model | PSNR ↑ | SSIM ↑ |
-|------|------:|------:|
-| RetinexNet | 15.95 | 0.652 |
-| **RetinexTapetum** | **19.24** | **0.773** |
+I --> J["Enhanced Output"]
 
 ---
 
-## 📁 Dataset
+## 📊 Quantitative Results (LOLv2 Real Captured)
 
-LOLv2 Real Captured:
-
-datasets/LoLv2/LOL-v2/Real_captured/
+| Method | Params (M) ↓ | FPS ↑ | PSNR ↑ | SSIM ↑ | LPIPS ↓ |
+|---|---:|---:|---:|---:|---:|
+| RetinexFormer | 1.6057 | 23.31 | 22.79 | 0.8386 | 0.1707 |
+| RetinexTapetum (Ours) | 0.5247 | 85.03 | 19.25 | 0.7734 | 0.3669 |
+| Zero-DCE | 0.0794 | 229.10 | 17.99 | 0.5778 | 0.3126 |
+| RetinexNet | N/A | N/A | 15.95 | 0.6524 | 0.4128 |
 
 ---
 
 ## ⚡ Quick Start
 
+from google.colab import drive
+drive.mount('/content/drive')
+
+DRIVE_ROOT = "/content/drive/MyDrive/TAPETUM"
+
 python run_all_tapetum_models_colab.py
+
+---
+
+## 🔗 Code and Data
+
+GitHub:
+https://github.com/muratdelen/TAPETUM
+
+Google Drive:
+https://drive.google.com/drive/folders/13ayyEC3V1wWdX3AXdfL8y7VqnL8eTPFT
 
 ---
 
 ## 📖 Citation
 
-@article{delen2026tapetum,
-  title={Tapetum-Retinex: A Bio-Inspired Low-Light Image Enhancement},
-  author={Delen, Murat},
+@article{delen2026retinextapetum,
+  title={RetinexTapetum: Bio-Inspired Active Illumination Modeling for Efficient Low-Light Image Enhancement},
+  author={Delen, Murat and Ciftci, Serdar},
   year={2026}
 }
 
 ---
 
-## 👤 Author
+## 👤 Authors
 
 Murat Delen  
 Harran University  
-Computer Engineering
+
+Serdar Ciftci  
+Harran University  
