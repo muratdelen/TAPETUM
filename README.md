@@ -60,8 +60,6 @@ H --> I
 
 I --> J["Enhanced Output"]
 
----
-
 ## 📊 Quantitative Results (LOLv2 Real Captured)
 
 | Method | Params (M) ↓ | FPS ↑ | PSNR ↑ | SSIM ↑ | LPIPS ↓ |
