@@ -1,4 +1,0 @@
-Table X reports the quantitative comparison between RetinexNet and RetinexTapetum on the LOL-v2 Real Captured test set.
-RetinexTapetum achieved superior reconstruction quality compared with the baseline RetinexNet, as reflected by improved PSNR and SSIM values.
-In addition, lower LPIPS, NIQE, and BRISQUE scores indicate that the proposed method produces perceptually more natural enhanced images.
-The visual comparisons further confirm that RetinexTapetum preserves structural details more effectively while reducing illumination inconsistency and color distortion.

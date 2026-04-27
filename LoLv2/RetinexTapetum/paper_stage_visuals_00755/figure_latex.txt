@@ -1,0 +1,6 @@
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{00690_combined_pipeline_figure.png}
+    \caption{Visualization of the proposed RetinexTapetum framework on LOL-v2 Real image 00690. The upper part illustrates the model pipeline: the input low-light image is decomposed into reflectance and illumination, the illumination is processed by the Tapetum attention branch, and the enhanced illumination is recombined with reflectance to obtain the final enhanced image. The lower part presents the corresponding stage-wise outputs: input image, reflectance, illumination, Tapetum attention map, enhanced illumination, final enhanced result, and ground-truth reference.}
+    \label{fig:retinex_tapetum_pipeline_00690}
+\end{figure*}

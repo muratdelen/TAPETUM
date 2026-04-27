@@ -27,7 +27,8 @@ TEST_HIGH_DIR = os.path.join(DATA_ROOT, "Test", "Normal")
 # -----------------------------------------------------------------------------
 # All experiment artifacts are written under this run directory.
 RUN_ROOT = "../LoLv2/RetinexTapetum"
-CKPT_DIR = os.path.join(RUN_ROOT, "checkpoints")
+#CKPT_DIR = os.path.join(RUN_ROOT, "checkpoints")
+CKPT_DIR = "../LoLv2/RetinexTapetum/checkpoints"
 RESULT_DIR = os.path.join(RUN_ROOT, "results", "Test")
 
 # -----------------------------------------------------------------------------

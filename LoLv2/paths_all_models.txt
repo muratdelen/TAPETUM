@@ -1,0 +1,23 @@
+# =========================
+# 4) PATHS
+# =========================
+DRIVE_ROOT = "/content/drive/MyDrive/TAPETUM"
+
+DATA_LOW = os.path.join(DRIVE_ROOT, "datasets/LoLv2/LOL-v2/Real_captured/Test/Low")
+DATA_GT  = os.path.join(DRIVE_ROOT, "datasets/LoLv2/LOL-v2/Real_captured/Test/Normal")
+
+RETINEXTAPETUM_REPO = os.path.join(DRIVE_ROOT, "RetinexTapetum")
+RETINEXNET_REPO     = os.path.join(DRIVE_ROOT, "RetinexNet")
+ZERODCE_REPO        = os.path.join(DRIVE_ROOT, "Zero-DCE")
+RETINEXFORMER_REPO  = os.path.join(DRIVE_ROOT, "RetinexFormer")
+
+RETINEXTAPETUM_WEIGHT = os.path.join(DRIVE_ROOT, "LoLv2/RetinexTapetum/checkpoints/best.pth")
+RETINEXNET_CKPT_DIR   = os.path.join(DRIVE_ROOT, "RetinexNet/checkpoint")
+ZERODCE_WEIGHT        = os.path.join(DRIVE_ROOT, "Zero-DCE/model/Epoch99.pth")
+RETINEXFORMER_WEIGHT  = os.path.join(DRIVE_ROOT, "RetinexFormer/pretrained_weights/LOL_v2_real.pth")
+
+
+RETINEXTAPETUM_IMAGES = os.path.join(DRIVE_ROOT, "LoLv2/RetinexTapetum/results/Test")
+RETINEXNET_MAGES   = os.path.join(DRIVE_ROOT, "LoLv2/RetinexNet/results/Test")
+ZERODCE_MAGES        = os.path.join(DRIVE_ROOT, "LoLv2/ZeroDCE/results/Test")
+RETINEXFORMER_MAGES = os.path.join(DRIVE_ROOT, "RLoLv2/RetinexFormer/results/Test")

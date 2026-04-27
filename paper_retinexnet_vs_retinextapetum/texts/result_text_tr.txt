@@ -1,4 +1,0 @@
-Tablo X, LOL-v2 Real Captured test kümesi üzerinde RetinexNet ve RetinexTapetum arasındaki nicel karşılaştırmayı göstermektedir.
-RetinexTapetum, temel yöntem olan RetinexNet'e kıyasla PSNR ve SSIM değerlerinde daha iyi sonuçlar vererek daha yüksek yeniden yapılandırma kalitesi elde etmiştir.
-Buna ek olarak daha düşük LPIPS, NIQE ve BRISQUE değerleri, önerilen yöntemin algısal olarak daha doğal iyileştirilmiş görüntüler ürettiğini göstermektedir.
-Görsel karşılaştırmalar da RetinexTapetum'un yapısal detayları daha iyi koruduğunu ve aydınlatma tutarsızlığı ile renk bozulmasını daha iyi azalttığını doğrulamaktadır.
