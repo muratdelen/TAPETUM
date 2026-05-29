@@ -16,6 +16,32 @@ In this work, we propose **RetinexTapetum**, a bio-inspired LLIE framework that 
 
 The method is inspired by the **Tapetum Lucidum**, which enhances vision in nocturnal animals by reusing photons under low-light conditions.
 
+```mermaid
+flowchart LR
+  A["Low-light image"] --> B["DecomNet"]
+  B --> C["R_low: reflectance"]
+  B --> D["L_low: illumination"]
+  A --> E["High-frequency luminance"]
+  D --> F["Dark prior"]
+  A --> G["TapetumAttention"]
+  C --> G
+  D --> G
+  E --> G
+  F --> G
+  G --> H["T attention map"]
+  D --> I["LambdaMap"]
+  F --> I
+  E --> I
+  I --> J["lambda_map"]
+  D --> K["L_t = L_low * (1 + lambda_map * T)"]
+  C --> L["base_enh = R_low * L_t"]
+  L --> M["ColorRefinement"]
+  A --> M
+  H --> M
+  J --> M
+  E --> M
+  M --> N["enhanced image"]
+```
 ---
 
 ## 🧠 Method Formulation
