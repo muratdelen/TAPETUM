@@ -1,0 +1,51 @@
+name: Publish RetinexTapetum Android APK
+
+on:
+  push:
+    tags:
+      - 'mobile-v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish Android release APK
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Generate Android host and configure ONNX Runtime
+        run: bash tool/bootstrap_android.sh
+
+      - name: Fetch Flutter packages
+        run: flutter pub get
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - name: Publish GitHub Release
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            mobile/build/app/outputs/flutter-apk/app-release.apk \
+            --title "RetinexTapetum Camera ${GITHUB_REF_NAME}" \
+            --notes "Android research-demo APK built from the public RetinexTapetum repository."
